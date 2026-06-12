@@ -1,213 +1,176 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
+
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+
+import runningBoy from '../../assets/svg/running-boy-removed.svg';
 
 export default function LoginPage() {
-  return (
-    <div className="flex min-h-screen bg-background font-sans text-on-background">
-      {/* Left Side: Branding & Illustration (Hidden on mobile, takes 50% on desktop) */}
-      <div className="hidden lg:flex flex-col w-1/2 bg-gradient-to-br from-primary/10 via-primary-container/20 to-tertiary-container/30 relative overflow-hidden p-12">
-        {/* Abstract Background Shapes */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-          <div className="absolute -top-20 -left-20 w-96 h-96 bg-primary/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-80 h-80 bg-tertiary/20 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"></div>
-        </div>
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-        <div className="relative z-10 flex flex-col h-full justify-between">
-          <div>
-            <div className="flex items-center gap-sm mb-6">
-              <div className="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center font-display-lg font-bold text-2xl shadow-lg">
-                L
-              </div>
-              <h1 className="font-display-lg text-3xl font-bold text-primary dark:text-primary-fixed tracking-tight">
-                LearnSphere AI
-              </h1>
-            </div>
-            <p className="text-xl text-on-surface-variant font-medium max-w-md leading-relaxed">
-              Learn smarter with AI-powered study support
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    // Simulate network delay for AI mock verification
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    if (email === 'demo@learnai.com' && password === 'password123') {
+      // Success, redirect to dashboard
+      router.push('/');
+    } else {
+      setError('Invalid credentials. Please try demo@learnai.com / password123');
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex min-h-screen bg-background font-sans text-foreground">
+      
+      {/* Left Side: Authentication Form */}
+      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 md:p-16 relative bg-background">
+        <motion.div 
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full max-w-md relative z-10"
+        >
+          <div className="mb-10 text-center lg:text-left">
+            <h2 className="text-4xl font-bold text-foreground mb-4">Welcome back!</h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              Simplify your workflow and boost your productivity with <span className="font-semibold text-foreground">LearnSphere AI</span>. Get started for free.
             </p>
           </div>
 
-          {/* Floating Feature Cards */}
-          <div className="relative flex-1 flex items-center justify-center my-12">
-            <div className="relative w-full max-w-lg aspect-square">
-              {/* Center Element */}
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-primary/20 rounded-full animate-pulse blur-xl"></div>
-              
-              {/* Feature Card 1 */}
-              <div className="absolute top-[10%] left-[5%] glass-panel bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/30 dark:border-white/10 p-4 rounded-2xl shadow-xl flex items-center gap-4 hover:-translate-y-1 transition-transform duration-300">
-                <div className="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
-                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>smart_toy</span>
-                </div>
-                <div className="font-semibold text-sm text-on-surface">AI Doubt Solver</div>
-              </div>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            {/* Error Message */}
+            {error && (
+              <motion.div 
+                initial={{ opacity: 0, y: -10 }} 
+                animate={{ opacity: 1, y: 0 }} 
+                className="bg-destructive/15 text-destructive text-sm p-3 rounded-2xl border border-destructive/30"
+              >
+                {error}
+              </motion.div>
+            )}
 
-              {/* Feature Card 2 */}
-              <div className="absolute top-[30%] right-[0%] glass-panel bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/30 dark:border-white/10 p-4 rounded-2xl shadow-xl flex items-center gap-4 hover:-translate-y-1 transition-transform duration-300">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>quiz</span>
-                </div>
-                <div className="font-semibold text-sm text-on-surface">Smart Quizzes</div>
-              </div>
-
-              {/* Feature Card 3 */}
-              <div className="absolute bottom-[30%] left-[0%] glass-panel bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/30 dark:border-white/10 p-4 rounded-2xl shadow-xl flex items-center gap-4 hover:-translate-y-1 transition-transform duration-300">
-                <div className="w-10 h-10 rounded-full bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>query_stats</span>
-                </div>
-                <div className="font-semibold text-sm text-on-surface">Progress Tracking</div>
-              </div>
-
-              {/* Feature Card 4 */}
-              <div className="absolute bottom-[10%] right-[10%] glass-panel bg-white/40 dark:bg-black/40 backdrop-blur-md border border-white/30 dark:border-white/10 p-4 rounded-2xl shadow-xl flex items-center gap-4 hover:-translate-y-1 transition-transform duration-300">
-                <div className="w-10 h-10 rounded-full bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center">
-                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
-                </div>
-                <div className="font-semibold text-sm text-on-surface">Personalized Learning</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-sm text-on-surface-variant/70 font-medium">
-            © {new Date().getFullYear()} LearnSphere AI. All rights reserved.
-          </div>
-        </div>
-      </div>
-
-      {/* Right Side: Login Form */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 md:p-12 relative">
-        {/* Mobile Header (Only visible on small screens) */}
-        <div className="lg:hidden w-full max-w-md flex items-center gap-sm mb-12">
-          <div className="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center font-display-lg font-bold text-xl shadow-md">
-            L
-          </div>
-          <h1 className="font-display-lg text-2xl font-bold text-primary dark:text-primary-fixed">
-            LearnSphere AI
-          </h1>
-        </div>
-
-        <div className="w-full max-w-md bg-surface border border-outline-variant rounded-3xl p-8 md:p-10 shadow-2xl relative z-10">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-on-surface mb-2">Welcome Back</h2>
-            <p className="text-on-surface-variant">Login to continue your learning journey</p>
-          </div>
-
-          <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
             {/* Email Field */}
-            <div className="space-y-1.5">
-              <label htmlFor="email" className="block text-sm font-semibold text-on-surface">
-                Email
-              </label>
-              <div className="relative group">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors text-[20px]">
-                  mail
-                </span>
-                <input
-                  type="email"
-                  id="email"
-                  className="w-full bg-surface-container-low border border-outline-variant text-on-surface rounded-xl py-3 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-on-surface-variant/50"
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
+            <div className="space-y-2 relative">
+              <Input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="h-14 rounded-full px-6 bg-transparent border-input focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-primary text-base"
+                placeholder="Username or Email"
+                required
+              />
             </div>
 
             {/* Password Field */}
-            <div className="space-y-1.5">
-              <label htmlFor="password" className="block text-sm font-semibold text-on-surface">
-                Password
-              </label>
-              <div className="relative group">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors text-[20px]">
-                  lock
-                </span>
-                <input
+            <div className="space-y-2 relative">
+              <div className="relative">
+                <Input
                   type="password"
                   id="password"
-                  className="w-full bg-surface-container-low border border-outline-variant text-on-surface rounded-xl py-3 pl-10 pr-12 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all placeholder:text-on-surface-variant/50"
-                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="h-14 rounded-full pl-6 pr-12 bg-transparent border-input focus-visible:ring-1 focus-visible:ring-ring focus-visible:border-primary text-base"
+                  placeholder="Password"
                   required
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface focus:outline-none p-1 rounded-md"
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-none"
                 >
                   <span className="material-symbols-outlined text-[20px]">visibility_off</span>
                 </button>
               </div>
             </div>
 
-            {/* Remember Me & Forgot Password */}
-            <div className="flex items-center justify-between pt-1">
-              <label className="flex items-center gap-2 cursor-pointer group">
-                <div className="relative flex items-center justify-center">
-                  <input
-                    type="checkbox"
-                    className="peer appearance-none w-5 h-5 border-2 border-outline-variant rounded bg-surface-container-low checked:bg-primary checked:border-primary transition-colors cursor-pointer"
-                  />
-                  <span className="material-symbols-outlined absolute text-on-primary text-[14px] opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity">
-                    check
-                  </span>
-                </div>
-                <span className="text-sm text-on-surface-variant group-hover:text-on-surface transition-colors">
-                  Remember me
-                </span>
-              </label>
-              <a href="#" className="text-sm font-semibold text-primary hover:underline">
-                Forgot password?
+            {/* Forgot Password */}
+            <div className="flex justify-end pt-1">
+              <a href="#" className="text-sm font-semibold text-foreground hover:underline">
+                Forgot Password?
               </a>
             </div>
 
             {/* Login Button */}
             <div className="pt-2">
-              <button
-                type="submit"
-                className="w-full bg-primary text-on-primary hover:bg-primary/90 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm font-bold text-sm py-3.5 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                Sign In
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button 
+                  type="submit" 
+                  disabled={isLoading}
+                  className="w-full h-14 rounded-full font-bold text-base bg-foreground text-background hover:bg-foreground/90 transition-all shadow-md"
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin mr-2" />
+                      Authenticating...
+                    </>
+                  ) : (
+                    "Login"
+                  )}
+                </Button>
+              </motion.div>
             </div>
           </form>
 
-          {/* Divider */}
-          <div className="flex items-center my-8">
-            <div className="flex-1 border-t border-outline-variant"></div>
-            <span className="px-4 text-xs font-medium text-on-surface-variant uppercase tracking-wider">
-              or continue with
-            </span>
-            <div className="flex-1 border-t border-outline-variant"></div>
-          </div>
-
-          {/* Social Login */}
-          <div>
-            <button
-              type="button"
-              className="w-full bg-surface-container-lowest border border-outline-variant text-on-surface hover:bg-surface-container-low font-semibold text-sm py-3 px-4 rounded-xl transition-colors duration-200 flex items-center justify-center gap-3 shadow-sm"
-            >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
-              Sign in with Google
-            </button>
-          </div>
-
           {/* Signup Link */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-on-surface-variant">
-              Don't have an account?{' '}
-              <a href="#" className="font-semibold text-primary hover:underline">
-                Create account
+          <div className="mt-12 text-center">
+            <p className="text-sm text-muted-foreground font-medium">
+              Not a member?{' '}
+              <a href="#" className="font-semibold text-[#4CAF50] hover:text-[#388E3C] hover:underline">
+                Register now
               </a>
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
+
+      {/* Right Side: Visual Asset (Hidden on mobile) */}
+      <div className="hidden lg:flex flex-col w-1/2 p-4 md:p-6">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="w-full h-full bg-[#F4F9F4] rounded-[2.5rem] flex flex-col items-center justify-center p-8 lg:p-12 relative overflow-hidden"
+        >
+          {/* Main Illustration */}
+          <div className="relative w-full max-w-lg aspect-square flex items-center justify-center mb-10">
+            <Image 
+              src={runningBoy}
+              alt="LearnSphere AI Illustration"
+              className="object-contain w-full h-full drop-shadow-xl z-10"
+              priority
+            />
+          </div>
+
+          {/* Pagination dots (decorative) */}
+          <div className="flex gap-2 mb-8">
+            <div className="w-2 h-2 rounded-full bg-black/20"></div>
+            <div className="w-6 h-2 rounded-full bg-black"></div>
+            <div className="w-2 h-2 rounded-full bg-black/20"></div>
+          </div>
+
+          <h3 className="text-xl lg:text-2xl font-medium text-center text-foreground max-w-sm lg:max-w-md">
+            Make your work easier and organized with <span className="font-bold">LearnSphere AI</span>
+          </h3>
+        </motion.div>
+      </div>
+
     </div>
   );
 }
