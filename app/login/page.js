@@ -124,7 +124,7 @@ export default function LoginPage() {
               </motion.div>
             </form>
 
-            <p className="mt-28 text-center text-[14px] font-medium text-[#202020] sm:mt-32">
+            <p className="mt-8 text-center text-[14px] font-medium text-[#202020]">
               Not a member?{" "}
               <Link href="#" className="font-semibold text-[#74a56d] hover:text-[#55864f]">
                 Register now
